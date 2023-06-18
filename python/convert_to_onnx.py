@@ -28,6 +28,7 @@ def main():
     torch.onnx.export(net_g,
                       dummy_input,
                       onnx_output_path,
+                      opset_version=7,
                       input_names=['input'],
                       output_names=['output_1', 'output_2'],
                       dynamic_axes={'input' : {0 : 'batch_size',
