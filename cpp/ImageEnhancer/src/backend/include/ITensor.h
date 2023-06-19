@@ -9,7 +9,8 @@ class ITensor
 public:
     virtual ~ITensor() = default;
 
-    virtual float* data() = 0;
+    // We do not want to allow to change the data
+    virtual const float* data() = 0;
     virtual const std::vector<std::size_t> shape() const = 0;
 };
 

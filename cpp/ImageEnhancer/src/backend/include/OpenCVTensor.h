@@ -12,7 +12,7 @@ public:
     OpenCVTensor(cv::Mat mat);
     ~OpenCVTensor() = default;
 
-    float* data() override { return reinterpret_cast<float*>(mat.data); }
+    const float* data() override { return reinterpret_cast<float*>(mat.data); }
     const std::vector<std::size_t> shape() const override { return data_shape; }
 
 private:

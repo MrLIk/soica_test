@@ -9,6 +9,10 @@
 
 namespace soica_test::backend {
 
+/*
+ * Contain the image enhancment pipeline
+ */
+
 class HINProcessor : public IImageProcessor
 {
 public:
@@ -24,6 +28,7 @@ private:
     std::shared_ptr<IInferencer> inferencer;
     std::shared_ptr<IImage2Tensor> image_to_tensor;
     std::shared_ptr<ITensor2Image> tensor_to_image;
+    // Name oth the target output layer
     const std::string output_name;
 };
 

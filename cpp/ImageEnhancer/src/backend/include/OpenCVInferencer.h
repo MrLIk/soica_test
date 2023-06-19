@@ -12,6 +12,9 @@ namespace soica_test::backend {
 class OpenCVInferencer : public IInferencer
 {
 public:
+    // Our vision of the existing backends
+    // Not all of those will work with the default opencv library from ubuntu repo
+    // CPU will definetly works
     enum class BackendType
     {
         CPU,
@@ -32,6 +35,7 @@ private:
     cv::dnn::Net net;
     std::vector<std::string> output_names;
 
+    // Conversation map of our backend type to opencv
     const std::unordered_map<BackendType, std::tuple<cv::dnn::Backend, cv::dnn::Target>> backend_map = {
         { BackendType::CPU, {cv::dnn::Backend::DNN_BACKEND_OPENCV, cv::dnn::Target::DNN_TARGET_CPU}},
         { BackendType::CUDA, {cv::dnn::Backend::DNN_BACKEND_CUDA, cv::dnn::Target::DNN_TARGET_CUDA}},

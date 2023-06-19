@@ -11,6 +11,7 @@ namespace soica_test::backend {
 OpenCVInferencer::OpenCVInferencer(const std::filesystem::path& net_path,
                                    BackendType backend_type)
 {
+    // We will work only with onnx
     if (net_path.extension() != ".onnx") {
         throw std::runtime_error("OpenCVInferencer can use only onnx models currently!");
     }
@@ -18,12 +19,13 @@ OpenCVInferencer::OpenCVInferencer(const std::filesystem::path& net_path,
     net = cv::dnn::readNetFromONNX(net_path);
 
     // OpenCV have several backends and targets
-    // Choose the desirede one
+    // Choose the desired one
     auto [backend_cv, targer_cv] = backend_map.at(backend_type);
     net.setPreferableBackend(backend_cv);
     net.setPreferableTarget(targer_cv);
 
     // TODO
+    // Possible bug in the model loading
     // It returns only one layer name, the second
     // It is approptiate for now
     output_names = net.getUnconnectedOutLayersNames();
@@ -35,6 +37,7 @@ std::unordered_map<std::string, std::shared_ptr<ITensor>> OpenCVInferencer::forw
 
     net.setInput(tensor_cv);
     std::vector<cv::Mat> result_tensor_cv;
+    // Collect results for output_names layers
     net.forward(result_tensor_cv, output_names);
 
     std::unordered_map<std::string, std::shared_ptr<ITensor>> result_map;

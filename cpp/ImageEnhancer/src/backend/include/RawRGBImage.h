@@ -18,7 +18,7 @@ public:
     std::size_t width() const override { return img_width; }
     std::size_t height() const override { return img_height; }
     std::size_t linesize() const override { return img_linesize; }
-    uint8_t* data() const override { return img_data.get(); }
+    const uint8_t* data() const override { return img_data.get(); }
 
 private:
     std::unique_ptr<uint8_t[]> img_data;

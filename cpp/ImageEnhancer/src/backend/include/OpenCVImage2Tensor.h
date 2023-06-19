@@ -13,8 +13,9 @@ public:
     std::shared_ptr<ITensor> convert(std::shared_ptr<IImage> image) override;
 
 private:
-    // image values multiplier
+    // Image values multiplier
     float normalize_value;
+
 };
 
 } // namespace backend
