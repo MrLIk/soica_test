@@ -24,6 +24,8 @@ ImageEnhancer::~ImageEnhancer()
 
 void ImageEnhancer::on_enhance_image(QImage image_qt) try
 {
+    // TODO: Too much copy in this method, need to do something
+
     // This may copy data
     // It should be usefull to add IImage wrapper class
     // Restrict to work only with RGB 3 channels
