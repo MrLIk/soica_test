@@ -47,9 +47,12 @@ int main(int argc, char *argv[]) try
     }
     auto output_image_path = parser.value("output_image_path");
 
+    // The python code normalize image to range [0, 1]
+    // So will multiply on 1.0 / 255.0
     auto normalize_input_image_value = 1.0f / 255.0f;
     auto image_to_tensor = std::make_shared<backend::OpenCVImage2Tensor>(normalize_input_image_value);
 
+    // The result tensor should be clamped to [0.0, 1.0] and scaled back to 255
     auto normalize_tensor_to_min_value = 0.0f;
     auto normalize_tensor_to_max_value = 1.0f;
     auto denormalize_result_image_value = 255.0f;
@@ -57,9 +60,12 @@ int main(int argc, char *argv[]) try
                                                                          normalize_tensor_to_max_value,
                                                                          denormalize_result_image_value);
 
+    // The CPU is only checked backend but others should work too
     auto inferencer = std::make_shared<backend::OpenCVInferencer>(onnx_model_path.toStdString(),
                                                                   backend::OpenCVInferencer::BackendType::CPU);
 
+    // We need only second output from the model
+    // It was called "output_2" during onnx conversation
     auto output_layer_name = "output_2";
     auto hin_processor = std::make_shared<backend::HINProcessor>(inferencer,
                                                                  image_to_tensor,
@@ -75,6 +81,7 @@ int main(int argc, char *argv[]) try
 
     qDebug() << "Load image" << input_image_path;
 
+    // Will exit when receive the result image
     auto on_image_enhanced = [&output_image_path](QImage image){
         qDebug() << "Receive the image_enhanced signal!";
         if (!image.save(output_image_path)) {
